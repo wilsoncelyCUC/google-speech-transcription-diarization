@@ -1,0 +1,28 @@
+# Environment variables - Contains secrets!
+.env
+
+# Google Cloud Service Account Key - Contains secrets!
+# IMPORTANT: Make sure this path matches where you actually store
+# the key file relative to this .gitignore file.
+# If your key is in '/Users/wilsoncely/code/By_use_case/Audio_2_text/vertex/secrets/my-key.json'
+# then use 'secrets/my-key.json' below.
+# If it's directly in the 'vertex' folder (less recommended), use '*.json' or 'your-key-name.json'.
+secrets/candidatesin-c05d452611ec.json
+
+# Python Virtual Environment Folders
+venv/
+.venv/
+
+# Python Bytecode and Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Optional: OS-specific files (good practice)
+.DS_Store
+Thumbs.db
+
+# Optional: IDE specific files (if you don't want to share settings)
+# .vscode/
+# .idea/
