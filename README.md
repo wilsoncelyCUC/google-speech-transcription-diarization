@@ -1,4 +1,4 @@
-# 🎙️ SpeakerSense
+# 🎙️ Google Speech Transcription with Diarization
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python Version](https://img.shields.io/badge/python-3.8%2B-brightgreen)
@@ -6,7 +6,7 @@
 
 > A powerful open-source audio transcription tool with speaker diarization capabilities, built on Google Cloud Speech-to-Text API
 
-SpeakerSense automatically transcribes audio files into text while identifying different speakers in conversations. It handles MP3 conversion, provides visual feedback throughout the process, and produces clean, organized transcripts.
+This tool automatically transcribes audio files into text while identifying different speakers in conversations. It handles MP3 conversion, provides visual feedback throughout the process, and produces clean, organized transcripts.
 
 ## ✨ Features
 
@@ -30,8 +30,14 @@ SpeakerSense automatically transcribes audio files into text while identifying d
 
 1. Clone this repository
 ```bash
-git clone https://github.com/yourusername/SpeakerSense.git
-cd SpeakerSense
+git clone https://github.com/wilsoncelyCUC/google-speech-transcription-diarization.git
+cd google-speech-transcription-diarization
+```
+
+Or with SSH:
+```bash
+git clone git@github.com:wilsoncelyCUC/google-speech-transcription-diarization.git
+cd google-speech-transcription-diarization
 ```
 
 2. Create and activate a virtual environment
@@ -99,7 +105,21 @@ Speaker 1: The conversation continues with speakers identified.
 
 ## 🛠️ Troubleshooting
 
-Check the [TROUBLESHOOTING.md](TROUBLESHOOTING.md) file for solutions to common issues.
+Common issues:
+
+1. **Error: GOOGLE_APPLICATION_CREDENTIALS environment variable not set**
+   - Make sure your `.env` file exists in the same directory as the script
+   - Check that the path to your service account key file is correct
+
+2. **Error: FFmpeg command not found**
+   - Ensure FFmpeg is properly installed
+   - Verify FFmpeg is in your system PATH
+   - Try running `ffmpeg -version` to confirm it's accessible
+
+3. **Error: The API returned no transcription results**
+   - Check if your audio file has clear speech
+   - Try using the `--enhanced` flag for better recognition
+   - If the audio is in a language other than English, specify the correct language code
 
 ## 🤝 Contributing
 
@@ -111,11 +131,9 @@ Contributions are welcome! Feel free to:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-Please check out our [contributing guidelines](CONTRIBUTING.md) for more details.
-
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
 ## 🙏 Acknowledgments
 
@@ -125,5 +143,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <p align="center">
-  Made with ❤️ by <a href="https://github.com/yourusername">your-username</a>
+  Made with ❤️ by <a href="https://github.com/wilsoncelyCUC">wilsoncelyCUC</a>
 </p>
