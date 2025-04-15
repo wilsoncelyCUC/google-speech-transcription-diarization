@@ -1,0 +1,237 @@
+
+last used
+python transcribe_final.py \
+    "/Users/wilsoncely/code/By_use_case/Audio_2_text/vertex/input/ProstaCare- Jury feedback 4.mp3" --enhanced
+
+
+# Audio Transcription Tool with Speaker Diarization
+## User Guide
+
+This guide will walk you through setting up and using the audio transcription tool that leverages Google Cloud Speech-to-Text API with speaker diarization capabilities.
+
+## Table of Contents
+1. [Prerequisites](#prerequisites)
+2. [Environment Setup](#environment-setup)
+3. [Installation](#installation)
+4. [Basic Usage](#basic-usage)
+5. [Advanced Options](#advanced-options)
+6. [Troubleshooting](#troubleshooting)
+7. [Understanding Results](#understanding-results)
+
+## Prerequisites
+
+Before you can use this tool, you need:
+
+- Python 3.8 or higher
+- A Google Cloud Platform (GCP) account
+- A GCP project with the Speech-to-Text API enabled
+- A Google Cloud Storage bucket
+- A service account with appropriate permissions
+- FFmpeg installed (for MP3 conversion)
+
+## Environment Setup
+
+### 1. Set Up Google Cloud Platform
+
+If you haven't already set up Google Cloud Platform:
+
+1. Go to https://console.cloud.google.com/ and create an account if you don't have one
+2. Create a new project
+3. Enable the Speech-to-Text API and Cloud Storage API
+4. Create a Cloud Storage bucket (remember the bucket name)
+5. Create a service account with the following roles:
+   - Speech-to-Text Admin
+   - Storage Object Admin
+
+### 2. Download Service Account Key
+
+1. In the Google Cloud Console, go to "IAM & Admin" > "Service Accounts"
+2. Find your service account and click on it
+3. Go to the "Keys" tab
+4. Click "Add Key" > "Create new key"
+5. Select JSON format and click "Create"
+6. Save the downloaded JSON file in a secure location
+
+### 3. Install FFmpeg
+
+FFmpeg is required for MP3 to FLAC conversion.
+
+- **Windows**:
+  1. Download from https://ffmpeg.org/download.html or use `winget install ffmpeg`
+  2. Add the FFmpeg /bin directory to your system PATH
+
+- **macOS**:
+  ```
+  brew install ffmpeg
+  ```
+
+- **Linux**:
+  ```
+  sudo apt update && sudo apt install ffmpeg  # Ubuntu/Debian
+  sudo yum install ffmpeg                     # CentOS/RHEL
+  ```
+
+## Installation
+
+### 1. Clone or Download the Script
+
+Save the transcription script to your local machine.
+
+### 2. Create a Virtual Environment
+
+```bash
+# Create and activate a virtual environment
+python -m venv venv
+
+# On Windows
+venv\Scripts\activate
+
+# On macOS/Linux
+source venv/bin/activate
+```
+
+### 3. Install Required Packages
+
+```bash
+pip install google-cloud-speech google-cloud-storage python-dotenv
+```
+
+### 4. Create Environment File
+
+Create a `.env` file in the same directory as the script with the following content:
+
+```
+GOOGLE_APPLICATION_CREDENTIALS="/path/to/your-service-account-key.json"
+GCS_BUCKET_NAME="your-gcs-bucket-name"
+```
+
+Replace the paths and names with your actual service account key path and bucket name.
+
+## Basic Usage
+
+The simplest way to transcribe an audio file:
+
+```bash
+python transcribe_audio_improved.py your-audio-file.mp3
+```
+
+For MP3 files, the script automatically:
+1. Converts the MP3 to FLAC format
+2. Uploads it to your Google Cloud Storage bucket
+3. Processes it with speaker diarization
+4. Saves the transcript to the "output" folder
+
+## Advanced Options
+
+The script supports several options for customizing the transcription process:
+
+```
+python transcribe_audio_improved.py your-audio-file.mp3 [OPTIONS]
+```
+
+Available options:
+
+| Option | Description |
+|--------|-------------|
+| `-l`, `--language` | Language code (e.g., en-US, es-ES, fr-FR). Default is en-US. |
+| `--min_speakers` | Minimum number of speakers expected. Default is 1. |
+| `--max_speakers` | Maximum number of speakers expected. Default is 5. |
+| `--sample_rate` | Sample rate in Hz (required for non-MP3 files). |
+| `--encoding` | Audio encoding type (required for non-MP3 files). |
+| `-o`, `--output` | Custom output file path. |
+| `--enhanced` | Use enhanced model for better accuracy. |
+
+### Example Commands
+
+**Transcribe an MP3 file in Spanish with 2-3 speakers:**
+```bash
+python transcribe_audio_improved.py interview.mp3 --language es-ES --min_speakers 2 --max_speakers 3
+```
+
+**Transcribe a FLAC file:**
+```bash
+python transcribe_audio_improved.py recording.flac --encoding FLAC --sample_rate 16000
+```
+
+**Use enhanced model for better accuracy:**
+```bash
+python transcribe_audio_improved.py conference.mp3 --enhanced
+```
+
+**Specify custom output location:**
+```bash
+python transcribe_audio_improved.py meeting.mp3 -o "transcripts/meeting_transcript.txt"
+```
+
+## Troubleshooting
+
+### Common Issues and Solutions
+
+**Error: GOOGLE_APPLICATION_CREDENTIALS environment variable not set**
+- Make sure your `.env` file exists in the same directory as the script
+- Check that the path to your service account key file is correct
+- Ensure the path uses the correct format for your operating system
+
+**Error: FFmpeg command not found**
+- Ensure FFmpeg is properly installed
+- Verify FFmpeg is in your system PATH
+- Try running `ffmpeg -version` to confirm it's accessible
+
+**Error: The API returned no transcription results**
+- Check if your audio file has clear speech
+- Try using the `--enhanced` flag for better recognition
+- If the audio is in a language other than English, specify the correct language code
+
+**Permission errors with Google Cloud**
+- Verify your service account has the correct permissions
+- Check that your GCS bucket exists and is accessible to your service account
+
+## Understanding Results
+
+### Output Format
+
+The transcription output is saved as a text file with the following format:
+
+```
+Speaker 1: This is the first person speaking. They might say several sentences.
+
+Speaker 2: This is the second person responding to the first speaker.
+
+Speaker 1: The conversation continues with speakers identified.
+```
+
+### Speaker Tags
+
+- Speakers are labeled as "Speaker 1", "Speaker 2", etc.
+- The actual speaker identities are not determined - only their distinction from each other
+- For best results, provide good estimates of the minimum and maximum number of speakers
+
+### Processing Statistics
+
+After completion, the tool provides statistics about:
+- Total processing time
+- Number of words transcribed
+- Number of speech segments identified
+- Path to the output file
+
+## Tips for Best Results
+
+1. **Use high-quality audio recordings**:
+   - Clear speech with minimal background noise
+   - Limited overlapping speech
+   - Consistent audio levels
+
+2. **Specify accurate speaker count**:
+   - Set `--min_speakers` and `--max_speakers` to realistic values
+   - If you know exactly how many speakers, set min and max to the same value
+
+3. **Use the correct language code**:
+   - Specify the primary language spoken in the recording
+   - For mixed languages, use the predominant language
+
+4. **For longer files**:
+   - Be patient as processing time increases with file length
+   - Consider splitting very long recordings into smaller segments
+
+5. **Use the enhanced model for important transcriptions**:
+   - The `--enhanced` flag provides better accuracy but may take longer to process
