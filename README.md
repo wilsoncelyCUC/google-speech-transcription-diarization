@@ -60,7 +60,7 @@ GCS_BUCKET_NAME="your-gcs-bucket-name"
 ### Basic Usage
 
 ```bash
-python transcribe_audio_improved.py your-audio-file.mp3
+python transcribe_final.py your-audio-file.mp3
 ```
 
 That's it! Your transcription will be saved to the `output` folder.
@@ -68,7 +68,7 @@ That's it! Your transcription will be saved to the `output` folder.
 ## 🎛️ Advanced Options
 
 ```
-python transcribe_audio_improved.py your-audio-file.mp3 [OPTIONS]
+python transcribe_final.py your-audio-file.mp3 [OPTIONS]
 ```
 
 | Option | Description |
@@ -85,12 +85,17 @@ python transcribe_audio_improved.py your-audio-file.mp3 [OPTIONS]
 
 **Transcribe an MP3 file in Spanish with 2-3 speakers:**
 ```bash
-python transcribe_audio_improved.py interview.mp3 --language es-ES --min_speakers 2 --max_speakers 3
+python transcribe_final.py interview.mp3 --language es-ES --min_speakers 2 --max_speakers 3
 ```
 
 **Use enhanced model for better accuracy:**
 ```bash
-python transcribe_audio_improved.py conference.mp3 --enhanced
+python transcribe_final.py conference.mp3 --enhanced
+```
+
+**Specify custom output location:**
+```bash
+python transcribe_final.py meeting.mp3 -o "transcripts/meeting_transcript.txt"
 ```
 
 ## 📝 Output Format
